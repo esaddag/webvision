@@ -1,0 +1,138 @@
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	{% block title %}
+	{% endblock title %}
+
+</head>
+
+<body>
+	<nav class="navbar navbar-expand navbar-light bg-light mb-4">
+		<a class="navbar-brand" href="/">WebVision</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+
+			</ul>
+
+			<a class="btn btn-outline-danger" href="{% url 'logout2'%}">Logout</a>
+		</div>
+	</nav>
+	<div class="jumbotron" id="url-input">
+		<h1 class="text-center">WebVision Cartoonizer</h1>
+		<p class="text-center">Please provide an image url or upload an image and click "Cartoonize" button.</p>
+		<div class="row justify-content-center">
+			<div class="col-12 col-md-6">
+				<form class="row p-2" id="url-form" novalidate action="{% url 'cartoonizer:cartoonize' %}" method="POST">
+					<div class="input-group">
+						<input type="url" name="url" id="url" class="form-control" autocomplete="off"
+							placeholder="Enter image URL" required>
+						<div class="input-group-append">
+							<button class="btn btn-secondary" id="urlSubmit" type="submit">Cartoonize</button>
+						</div>
+					</div>
+	
+				</form>
+				<div id="no-url" class="invalid-feedback">Please enter a URL!</div>
+
+			</div>
+			
+		</div>
+
+		<p class="text-center">Or</p>
+
+		<div class="row justify-content-center">
+			<div class="col-12 col-md-6">
+				<form class="row p-2 needs-validation justify-content-center" autocomplete="off" id="file-form" method="POST" enctype="multipart/form-data"
+				action="{% url 'cartoonizer:cartoonize' %}" method="POST">
+				<div class="input-group" id="file-input-group">
+					<div class="custom-file">
+						<input id="imagefile" name="image" type="file" class="form-control file custom-file-input"
+							data-show-preview="false">
+
+						<label class="custom-file-label" for="imagefile">Choose file</label>
+
+					</div>
+					
+					<div class="input-group-append">
+						<button type="submit" class="input-group-button btn btn-secondary"
+							id="imageSubmit">Cartoonize</button>
+					</div>
+
+					
+				
+				</div>
+				
+				</form>
+				<div id="no-file" class="invalid-feedback">Please choose an image!</div>
+				<div id="wrong-filetype" class="invalid-feedback">Please choose an image file with JPG, PNG or JPEG extentions!</div>
+
+			</div>
+			
+
+					
+
+			<script>
+				
+				$("#urlSubmit").click(function (){
+					var givenurl = $("#url").val();
+					if (!givenurl) {
+						$('#url').addClass("is-invalid");
+						$('#no-url').show()
+
+					}else {
+						$("#url-form").submit();
+					}
+					return false;
+				});
+
+
+				$('#imageSubmit').click(function () {
+					var imagefile = $("#imagefile").val();
+					var extension = imagefile.split('.').pop().toUpperCase();
+					if (imagefile.length < 1) {
+						$('#imagefile').addClass("is-invalid");
+						$('#no-file').show()
+
+					}
+					else if (extension != "PNG" && extension != "JPG" && extension != "JPEG") {
+						$('#imagefile').addClass("is-invalid");
+						$('#wrong-filetype').show()
+
+					}else {
+						$("#file-form").submit();
+					}
+					return false;
+					
+				});
+
+
+				// Add the following code if you want the name of the file appear on select
+				$(".custom-file-input").on("change", function () {
+					$('#imagefile').removeClass("is-invalid");
+					$('#url').removeClass("is-invalid");
+					$('#no-url').hide()
+					$('#no-file').hide()
+					$('#wrong-filetype').hide()
+					var fileName = $(this).val().split("\\").pop();
+					$(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+					console.log(fileName)
+				});
+			</script>
+		</div>
+	</div>
+
+
+
+</body>

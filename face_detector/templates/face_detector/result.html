@@ -1,0 +1,65 @@
+
+
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+	{% block title %}
+	{% endblock title %}
+
+</head>
+
+<body>
+<nav class="navbar navbar-expand navbar-light bg-light mb-4">
+		<a class="navbar-brand" href="/">WebVision</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+
+			</ul>
+
+			<a class="btn btn-outline-danger" href="{% url 'logout2'%}">Logout</a>
+		</div>
+	</nav>
+<div class="jumbotron">
+		<h1 class="text-center">Detected Faces</h1>
+		<div class="row justify-content-center">
+		<div class="col-12 col-md-8">
+			<img class="img-fluid" src="data:image/jpeg;base64, {{image}}">
+		</div>
+		
+		<div class="col-12 col-md-4">
+			<div class="row justify-content-center" style="height: 100%;">
+				<div class="col-10 m-2 p-4 border border-primary rounded-lg text-center">
+					{% if num_faces > 0 %}
+					<h4>Number of faces detected: </h4>
+					<h2 class="text-danger">{{num_faces}}</h2>
+					<h5>Detected face coordinates:</h5>
+					<p class="text-secondary">{{face_list}}</p>
+					<a class="btn btn-info btn-lg m-2" href="data:image/jpeg;base64, {{image}}" download="detected_faces.jpg" role="button">Download Image</a>
+				{% else %}
+					<h3 class="text-danger">No face detected!</h3>
+				{% endif %}
+				</div>
+			</div>
+		
+		
+		</div>
+		
+
+		
+
+		</div>
+		
+</div>
+</body>

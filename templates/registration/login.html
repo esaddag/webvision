@@ -1,0 +1,80 @@
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+	{% block title %}
+	{% endblock title %}
+
+</head>
+
+<body>
+
+	<div class="container" style="margin-top:5%;">
+		<div class="row justify-content-center" >
+			<div class="col-10  col-md-4 border border-primary p-4 rounded-lg">
+	
+				{% block content %}
+				{% if form.errors %}
+				<div class="alert alert-danger" role="alert">
+					Your username and password didn't match. Please try again.
+				</div>
+				{% endif %}
+	
+				{% if next %}
+				{% if user.is_authenticated %}
+				<div class="alert alert-danger" role="alert">Your account doesn't have access to this page. To proceed,
+					please login with an account that has access.
+				</div>
+				{% else %}
+				<div class="alert alert-danger" role="alert">Please login to see this page..
+				</div>
+				{% endif %}
+				{% endif %}
+	
+				{% if messages %}
+					{% for message in messages %}
+						{% if message.tags == "error" %}
+							<div class="alert alert-danger">
+						{%else%}
+							<div class="alert alert-{{ message.tags }}">
+						{%endif%}
+						
+						{{ message|safe }}
+						</div>
+					{% endfor %}
+				{% endif %}
+	
+				<div class="form-group">
+					<form method="post" action="{% url 'login' %}">
+					<h3 class="text-center m-2">Sign In</h2>
+						{% csrf_token %}
+						<input class="m-1 form-control" type="text" name="username" autofocus="" placeholder="username"
+							autocapitalize="none" autocomplete="username" maxlength="150" required="" id="id_username">
+						<input class="m-1 form-control" type="password" name="password" placeholder="password"
+							autocomplete="current-password" required="" id="id_password">
+	
+						<p class="p-2"><a class="text-secondary" href="{% url 'password_reset' %}">Lost password?</a></p>
+						<input class="m-1 btn btn-primary btn-block" style="margin-top:20px !important	" type="submit"
+							value="Login" />
+						
+					</form>
+	
+					
+	
+				</div>
+				{# Assumes you setup the password_reset view in your URLconf #}
+				<p class="text-center">Or</p>
+				<a class="m-1 btn  btn-block btn-outline-primary" style="margin-top:20px !important" href="{% url 'signup2' %}">Sign Up</a>
+	
+				{% endblock content%}
+	
+			</div>
+		</div>
+	</div>
+	
+
+</body>
